@@ -50,6 +50,9 @@ def is_nextpage():
 
 
 def findsavemedia(url, path='save'):
+    piclist=[]
+    videolist=[]
+    datetime='0000-00-00 00:00:00'
     driver.get(url)
 
     try:
@@ -82,7 +85,7 @@ def findsavemedia(url, path='save'):
             num = 1
             for i in piclist:
                 picname = datetime + ' ' + str(num)
-                picname = re.sub('[\/:*?"<>|]', '', picname)
+                picname = re.sub(r'[\\/:*?"<>|]', '', picname)
                 # print(picname)
                 r = requests.get(i)
                 with open(path + '/' + picname + '.jpg', 'wb') as f:
@@ -111,13 +114,13 @@ def findsavemedia(url, path='save'):
             num = 1
             for i in videolist:
                 videoname = datetime + ' ' + str(num)
-                videoname = re.sub('[\/:*?"<>|]', '', videoname)
+                videoname = re.sub(r'[\\/:*?"<>|]', '', videoname)
                 # print(videoname)
                 r = requests.get(i)
                 with open(path + '/' + videoname + '.mp4', 'wb') as f:
                     f.write(r.content)
                 num += 1
-                print('Saved instagram vide ' + videoname + '.mp4')
+                print('Saved Instagram video ' + videoname + '.mp4')
         except:
             print('Failed to save video,URL:', url)
             failedlist.append(url)
@@ -126,7 +129,7 @@ def findsavemedia(url, path='save'):
 
 
 def makefolder(path):
-    path = re.sub('[\/:*?"<>|]', '', path)
+    path = re.sub(r'[\\/:*?"<>|]', '', path)
     try:
         if not os.path.exists(path):
             os.makedirs(path)
